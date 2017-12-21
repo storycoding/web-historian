@@ -8,6 +8,7 @@ var _ = require('underscore');
  * if you move any files, you'll only need to change your code in one place! Feel free to
  * customize it in any way you wish.
  */
+ 
 
 exports.paths = {
   siteAssets: path.join(__dirname, '../web/public'),
@@ -26,25 +27,33 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) {
-  fs.readFile('../web/archives/sites.txt', function(err, data) {
-    if (err) {
-      exports.throwTeaPot(request, response);
-    } else {
-      callback(data);
-    }
 
+  fs.readFile(exports.paths.list, 'utf8', (err, data) => {
+    if (err) {
+      throw err;
+    } else {
+      callback(data.split('\n'));
+    }
   });
 };
 
 exports.isUrlInList = function(url, callback) {
+  
+  exports.readListOfUrls(function(data) {
+    callback(data.includes(url));
+  });
+  
 };
 
 exports.addUrlToList = function(url, callback) {
- // adds stringified url to url file // specifics later
+  fs.appendFile(exports.paths.list, url, function(err) {
+    if (err) { throw err; }
+    callback();
+  });
 };
 
 exports.isUrlArchived = function(url, callback) {
- // if downloaded file exists in the archive folder
+  callback(fs.existsSync(exports.paths.archivedSites +'/' + url));
 };
 
 exports.downloadUrls = function(urls) {

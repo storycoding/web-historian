@@ -13,7 +13,8 @@ exports.headers = {
 
 var router = {
   '/': './public/index.html',
-  '/styles.css': './public/styles.css'
+  '/styles.css': './public/styles.css',
+  '/loading.html': './public/loading.html'
 };
 
 exports.serveAssets = function(res, asset, callback) {
