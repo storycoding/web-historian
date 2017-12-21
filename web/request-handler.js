@@ -5,7 +5,10 @@ var httpHelper = require('./http-helpers');
 
 exports.handleRequest = function (req, res) { // this is only for post requests on homepage
   var url = req.url;
-  archive.readListOfUrls(archive.isUrlInList);
+  archive.isUrlInList(url, archive.readListOfUrls);
+  // archive.readListOfUrls(archive.isUrlInList);
+  
+  
   // pull out the requested URL
   // read URL list and store in array - readList
   // isURLInList?

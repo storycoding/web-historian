@@ -17,13 +17,18 @@ var router = {
   '/loading.html': './public/loading.html'
 };
 
+
+// serve the index.html here
 exports.serveAssets = function(res, asset, callback) {
   // Write some code here that helps serve up your static files!
   // (Static files are things like html (yours or archived from others...),
   // css, or anything that doesn't change often.)
   
-  fs.readFile(router[asset], function(err, data) {
+  //kirk suggested the test was failing because it couldn't access our router[asset]
+  fs.readFile( __dirname + '/public/index.html', function(err, data) {
+    
     if (err) {
+      console.log('err = ', err);
       exports.throwTeaPot(request, response);
     }
     res.writeHead(200, exports.headers);

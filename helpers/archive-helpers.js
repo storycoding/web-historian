@@ -53,15 +53,10 @@ exports.addUrlToList = function(url, callback) {
 };
 
 exports.isUrlArchived = function(url, callback) {
-  callback(fs.existsSync(exports.paths.archivedSites +'/' + url));
+  callback(fs.existsSync(exports.paths.archivedSites + '/' + url));
 };
 
 exports.downloadUrls = function(urls) {
  // worker fetch // is it inside the cron job?
-};
-
-exports.hasURLListChanged = function(previousList) {
-  // Add the "has URL List changed since last run" function
-  // return the diff in an array
 };
 
