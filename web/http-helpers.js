@@ -12,9 +12,24 @@ exports.headers = {
 };
 
 var router = {
-  '/': './public/index.html',
-  '/styles.css': './public/styles.css',
-  '/loading.html': './public/loading.html'
+  '/': '/public/index.html',
+  '/styles.css': '/public/styles.css',
+  '/loading.html': '/public/loading.html'
+};
+
+exports.bufferData = function(req, callback) {
+
+  let total;
+
+  req.on('data', (chunk) => {
+    total += chunk;
+  });
+
+  req.on('end', () => {
+    let bufferedData = total;
+    callback(bufferedData);
+  });
+
 };
 
 
@@ -25,8 +40,7 @@ exports.serveAssets = function(res, asset, callback) {
   // css, or anything that doesn't change often.)
   
   //kirk suggested the test was failing because it couldn't access our router[asset]
-  fs.readFile( __dirname + '/public/index.html', function(err, data) {
-    
+  fs.readFile( __dirname + router[asset], function(err, data) {
     if (err) {
       console.log('err = ', err);
       exports.throwTeaPot(request, response);

@@ -46,9 +46,16 @@ exports.isUrlInList = function(url, callback) {
 };
 
 exports.addUrlToList = function(url, callback) {
-  fs.appendFile(exports.paths.list, url, function(err) {
+  // fs.writeFile(exports.paths.list, 'yoohoo', function(err) {
+  //   if (err) { throw err; }
+  //   callback();
+  //   console.log('data was appended!');
+  // });  
+  console.log('path here', exports.paths.list);
+  fs.appendFile('list.txt', url + '\n', function(err) {
     if (err) { throw err; }
     callback();
+    console.log('data was appended!');
   });
 };
 
