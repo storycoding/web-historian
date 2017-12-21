@@ -26,16 +26,33 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) {
+  fs.readFile('../web/archives/sites.txt', function(err, data) {
+    if (err) {
+      exports.throwTeaPot(request, response);
+    } else {
+      callback(data);
+    }
+
+  });
 };
 
 exports.isUrlInList = function(url, callback) {
 };
 
 exports.addUrlToList = function(url, callback) {
+ // adds stringified url to url file // specifics later
 };
 
 exports.isUrlArchived = function(url, callback) {
+ // if downloaded file exists in the archive folder
 };
 
 exports.downloadUrls = function(urls) {
+ // worker fetch // is it inside the cron job?
 };
+
+exports.hasURLListChanged = function(previousList) {
+  // Add the "has URL List changed since last run" function
+  // return the diff in an array
+};
+
