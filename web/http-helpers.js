@@ -17,15 +17,15 @@ var router = {
   '/loading.html': '/public/loading.html'
 };
 
-exports.bufferData = function(req, callback) {
+exports.bufferData = function(res, callback) {
 
   let total;
 
-  req.on('data', (chunk) => {
+  res.on('data', (chunk) => {
     total += chunk;
   });
 
-  req.on('end', () => {
+  res.on('end', () => {
     let bufferedData = total;
     callback(bufferedData);
   });
@@ -34,7 +34,7 @@ exports.bufferData = function(req, callback) {
 
 
 // serve the index.html here
-exports.serveAssets = function(res, asset, callback) {
+exports.serveAssets = function(response, asset, callback) {
   // Write some code here that helps serve up your static files!
   // (Static files are things like html (yours or archived from others...),
   // css, or anything that doesn't change often.)
@@ -42,22 +42,25 @@ exports.serveAssets = function(res, asset, callback) {
   //kirk suggested the test was failing because it couldn't access our router[asset]
   fs.readFile( __dirname + router[asset], function(err, data) {
     if (err) {
-      console.log('err = ', err);
-      exports.throwTeaPot(request, response);
+      exports.throwTeaPot(response);
     }
-    res.writeHead(200, exports.headers);
-    res.write(data);
-    res.end();
+    response.writeHead(200, exports.headers);
+    response.write(data);
+    response.end();
   });
 };
 
-exports.respondSuccess = function(request, response) {
-  response.writeHead(200
-  , exports.headers);
+exports.respondRedirect = function(response, location) {
+  response.writeHead(302, {'Location': location});
   response.end();
 };
 
-exports.throwTeaPot = function(request, response) {
+exports.respondSuccess = function(response) {
+  response.writeHead(200, exports.headers);
+  response.end();
+};
+
+exports.throwTeaPot = function(response) {
   response.writeHead(418
   , exports.headers);
   response.end('The requested entity body is short and stout. Tip me over and pour me out.');

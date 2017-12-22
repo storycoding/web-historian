@@ -8,21 +8,12 @@ exports.handleRequest = function (req, res) { // this is only for post requests 
 
   httpHelper.bufferData(req, function(data) {
     let url = data.substr(data.indexOf('=') + 1);
-    archive.isUrlInList(url, function(bool) {
-      if (bool) {
-        archive.isUrlArchived(url, (isArchived) => {
-          if (isArchived) {
-
-          } else {
-            httpHelper.serveAssets(res, '/loading.html');
-          }
-
-        });
-
+    archive.isUrlArchived(url, function(isArchived) {
+      if (isArchived) {
+        httpHelper.respondRedirect(res, 'http://127.0.0.1:8080' + url); 
       } else {
-        archive.addUrlToList(url, function() {
-          httpHelper.serveAssets(res, '/loading.html');
-        });
+        httpHelper.respondRedirect(res, 'http://127.0.0.1:8080/loading.html');
+        archive.addUrlToList(url);
       }
     });
   });

@@ -17,7 +17,7 @@ var server = http.createServer(function(request, response) {
   let address = url.parse(request.url); // splits the url into different parts
 
   // route handler for non-archived pages
-  if (address.pathname === '/' || address.pathname === '/styles.css') {
+  if (address.pathname === '/' || address.pathname === '/styles.css' || address.pathname === '/loading.html') {
     
     if (request.method === 'GET') { // also have to send styles.css
       httpHelper.serveAssets(response, address.pathname);
@@ -30,12 +30,11 @@ var server = http.createServer(function(request, response) {
       handler.handleRequest(request, response);
       
     } else if (request.method === 'OPTIONS') {
-      httpHelper.respondSuccess(request, response);
+      httpHelper.respondSuccess(response);
       
     } else {
-      httpHelper.throwTeaPot(request, response);
+      httpHelper.throwTeaPot(response);
     }
-
   // if get request to other path
       // attempt to serve archive
       // otherwise error
@@ -48,17 +47,12 @@ var server = http.createServer(function(request, response) {
         //throw error 404
         
     } else if (request.method === 'OPTIONS') {
-      httpHelper.respondSuccess(request, response);
+      httpHelper.respondSuccess(response);
     
     } else {
-      httpHelper.throwTeaPot(request, response);
+      httpHelper.throwTeaPot(response);
     }
   }
-
-
-  
-
-
 
 });
 

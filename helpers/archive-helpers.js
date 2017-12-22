@@ -1,6 +1,8 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var http = require('http');
+var httpHelpers = require('../web/http-helpers');
 
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
@@ -51,11 +53,11 @@ exports.addUrlToList = function(url, callback) {
   //   callback();
   //   console.log('data was appended!');
   // });  
-  console.log('path here', exports.paths.list);
-  fs.appendFile('list.txt', url + '\n', function(err) {
+  fs.appendFile(exports.paths.list, url + '\n', (err) => {
     if (err) { throw err; }
-    callback();
-    console.log('data was appended!');
+    if (callback) {
+      callback();
+    }
   });
 };
 
@@ -64,6 +66,24 @@ exports.isUrlArchived = function(url, callback) {
 };
 
 exports.downloadUrls = function(urls) {
- // worker fetch // is it inside the cron job?
+  for (var i = 0; i < urls.length; i++) {
+    let url = urls[i];
+    
+    http.get(url, (res) => {
+      if (res.statusCode !== 200) {
+        throw ('STATUS CODE: ' + res.statusCode + '. Could not retrieve data.');
+      }
+
+      httpHelpers.bufferData(res, (file) => {
+        fs.writeFile( exports.paths.archivedSites + '/' + url, file, function(err) {
+          if (err) { throw err; }
+          httpHelpers.router[url] = '/' + url;
+          console.log(url, ' was successfully written on da archiver, Yo!');
+        });  
+      });
+
+    });
+  }
+
 };
 
