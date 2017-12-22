@@ -77,6 +77,9 @@ exports.downloadUrls = function(urls) {
       httpHelpers.bufferData(res, (file) => {
         fs.writeFile( exports.paths.archivedSites + '/' + url, file, function(err) {
           if (err) { throw err; }
+          if (!file) {
+            console.log('WRITE FAILED. FILE RETURNED WAS UNDEFINED');
+          }
           httpHelpers.router[url] = '/' + url;
           console.log(url, ' was successfully written on da archiver, Yo!');
         });  
