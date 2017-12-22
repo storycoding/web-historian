@@ -2,7 +2,6 @@ var http = require('http');
 var handler = require('./request-handler');
 var initialize = require('./initialize.js');
 var httpHelper = require('./http-helpers');
-var htmlFetch = require('../workers/htmlfetcher');
 var url = require('url');
 var fs = require('fs');
 // Why do you think we have this here?
@@ -62,8 +61,6 @@ if (module.parent) {
   server.listen(port, ip);
   console.log('Listening on http://' + ip + ':' + port);
 }
-
-// setInterval (html fetcher, one minute)
 
 
 

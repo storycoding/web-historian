@@ -13,7 +13,12 @@ exports.handleRequest = function (req, res) { // this is only for post requests 
         httpHelper.respondRedirect(res, 'http://127.0.0.1:8080' + url); 
       } else {
         httpHelper.respondRedirect(res, 'http://127.0.0.1:8080/loading.html');
-        archive.addUrlToList(url);
+        archive.isUrlInList(url, function(urlInList) {
+          if (!urlInList) {
+            archive.addUrlToList(url);
+          }
+        });
+        
       }
     });
   });
