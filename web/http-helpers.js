@@ -11,7 +11,7 @@ exports.headers = {
   'Content-Type': 'text/html'
 };
 
-var router = {
+exports.router = {
   '/': '/public/index.html',
   '/styles.css': '/public/styles.css',
   '/loading.html': '/public/loading.html'
@@ -39,8 +39,8 @@ exports.serveAssets = function(response, asset, callback) {
   // (Static files are things like html (yours or archived from others...),
   // css, or anything that doesn't change often.)
   
-  //kirk suggested the test was failing because it couldn't access our router[asset]
-  fs.readFile( __dirname + router[asset], function(err, data) {
+  //kirk suggested the test was failing because it couldn't access our exports.router[asset]
+  fs.readFile( __dirname + exports.router[asset], function(err, data) {
     if (err) {
       exports.throwTeaPot(response);
     }
