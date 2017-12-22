@@ -69,13 +69,13 @@ exports.downloadUrls = function(urls) {
   for (var i = 0; i < urls.length; i++) {
     let url = urls[i];
     
-    http.get(url, (res) => {
+    http.get('http://' + url + '/', (res) => {
       if (res.statusCode !== 200) {
         throw ('STATUS CODE: ' + res.statusCode + '. Could not retrieve data.');
       }
 
       httpHelpers.bufferData(res, (file) => {
-        fs.writeFile( exports.paths.archivedSites + '/' + url, file, function(err) {
+        fs.writeFile( 'site.html', file, function(err) {
           if (err) { throw err; }
           if (!file) {
             console.log('WRITE FAILED. FILE RETURNED WAS UNDEFINED');
